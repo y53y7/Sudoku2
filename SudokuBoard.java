@@ -27,13 +27,8 @@ public class SudokuBoard {
          
       }
    }
-   
-   public boolean isTrue() {
-      if(help1()) { return true; }
-      return false;
-   }
-   
-   private boolean help1() {
+      
+   private boolean addNum() {
       Set<Integer> valSet = new TreeSet<>();
       for(int r = 0; r < board.length; r++) {
          for(int c = 0; c < board[0].length; c++) {
@@ -76,6 +71,24 @@ public class SudokuBoard {
       }
       return mini;
    }
+   
+   private boolean helpMini(int[][] mini) {
+      Set<Integer> miniSet = new TreeSet<>();
+      for(int r = 0; r < mini.length; r++) {
+         for(int c = 0; c < mini[0].length; r++) {
+            if(mini[r][c] != 0) { miniSet.add(mini[r][c]); }
+         }
+      }
+      
+      if(miniSet.size() == 9) { return true; }
+      return false;
+   }
+   
+   public boolean isValid(int[][] mini) {
+      if(addNum() && helpRows() && helpCol() && helpMini(mini)) { return true; }
+      return false;
+   }
+
    
    public String toString () {
       String result = "";
