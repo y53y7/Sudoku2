@@ -75,7 +75,7 @@ public class MySudokuBoard {
    private boolean helpMini(int[][] mini) {
       Set<Integer> miniSet = new TreeSet<>();
       for(int r = 0; r < mini.length; r++) {
-         for(int c = 0; c < mini[0].length; r++) {
+         for(int c = 0; c < mini[0].length; c++) {
             if(mini[r][c] != 0) { miniSet.add(mini[r][c]); }
          }
       }
