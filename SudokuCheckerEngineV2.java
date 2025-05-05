@@ -108,3 +108,16 @@ public class SudokuCheckerEngineV2 {
          System.out.println("**** HORRAY: ALL TESTS PASSED ****");
    }
 }
+
+/*
+  ----jGRASP exec: java SudokuCheckerEngineV2
+ Checking empty board...failed.
+ Checking incomplete, valid board...failed.
+ Checking complete, valid board...passed.
+ Checking dirty data board...passed.
+ Checking row violating board...passed.
+ Checking col violating board...passed.
+ Checking row&col violating board...passed.
+ Checking mini-square violating board...passed.
+ 
+*/
