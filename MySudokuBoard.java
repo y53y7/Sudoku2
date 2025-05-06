@@ -5,6 +5,7 @@ import java.util.*;
 
 public class MySudokuBoard { 
    private int [][] board;
+   private boolean boardIsValid = true;
    
    public MySudokuBoard (String fileName) throws FileNotFoundException {
       board = new int [9][9];
@@ -18,45 +19,59 @@ public class MySudokuBoard {
                char num = line.charAt(c);
                
                if(num=='.') {
-                  board[r][c]=0;
-               } else {
-                  board[r][c]= num-'0';
+                  board[r][c] = 0;
+               } 
+               else if (num >= '1' && num <= '9') {
+                  board[r][c]= num - 48;
                }
+               else { boardIsValid = false; }
             }
          }
          
       }
    }
       
-   private boolean addNum() {
-      Set<Integer> valSet = new TreeSet<>();
-      for(int r = 0; r < board.length; r++) {
-         for(int c = 0; c < board[0].length; c++) {
-            if(board[r][c] != 0) { valSet.add(board[r][c]); }
+//    private boolean addNum() {
+//       Set<Integer> valSet = new TreeSet<>();
+//       for(int r = 0; r < board.length; r++) {
+//          for(int c = 0; c < board[0].length; c++) {
+//             if(board[r][c] != 0) { valSet.add(board[r][c]); }
+//          }
+//       }
+//       return true;
+//    }
+//    
+   
+   private boolean helpRows () {
+      for (int r = 0; r < board.length; r++) {
+         Set<Integer> valSet = new TreeSet<>();
+         for (int c = 0; c < board[0].length; c++) {
+            int val = board[r][c];
+            if (val != 0) {
+               if (valSet.contains(val)) {
+                  return false;
+               }
+               valSet.add(val);
+            }
          }
       }
       return true;
    }
-   
-   
-   private boolean helpRows () {
-      Set<Integer> valSet = new TreeSet<>();
-          
-      for(int r = 0; r < board.length; r++) {
-         if(!valSet.contains(board[r][0])) { valSet.add(board[r][0]); }   
-      }      
-      if(valSet.size() == 9) { return true; }
-      return false;
-   }
-   
-   private boolean helpCol () {
-      Set<Integer> valSet = new TreeSet<>();
       
-      for(int c = 0; c < board[0].length; c++) {
-            if(!valSet.contains(board[0][c])) { valSet.add(board[0][c]); }
-      }      
-      if(valSet.size() == 9) { return true; }
-      return false;
+   private boolean helpCol () {
+      for (int c = 0; c < board[0].length; c++) {
+         Set<Integer> valSet = new TreeSet<>();
+         for (int r = 0; r < board.length; r++) {
+            int val = board[r][c];
+            if (val != 0) {
+               if (valSet.contains(val)) {
+                  return false;
+               }
+               valSet.add(val);
+            }
+         }
+      }
+      return true;
    }
    
    private int[][] miniSquare(int spot) {
@@ -76,16 +91,23 @@ public class MySudokuBoard {
       Set<Integer> miniSet = new TreeSet<>();
       for(int r = 0; r < mini.length; r++) {
          for(int c = 0; c < mini[0].length; c++) {
-            if(mini[r][c] != 0) { miniSet.add(mini[r][c]); }
+            int val = mini[r][c];
+            if (val != 0) { //changed this to start checking for duplicates because it was messing up when checking empty boards
+               if (miniSet.contains(val)) {
+                  return false;
+               }
+               miniSet.add(val);
+            }      
          }
       }
-      
-      if(miniSet.size() == 9) { return true; }
-      return false;
+      return true;
    }
    
    public boolean isValid() {
-      if(!addNum() || !helpRows() || !helpCol()) { 
+      if (!boardIsValid) {
+         return false;
+      }
+      if(!helpRows() || !helpCol()) { 
          return false; 
       }
       for (int i = 1; i <= 9; i++) {
